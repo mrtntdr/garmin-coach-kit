@@ -1,0 +1,7 @@
+athlete.json
+__pycache__/
+.claude/skills/
+plan.md
+log.md
+.DS_Store
+log-*.md

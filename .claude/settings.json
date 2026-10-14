@@ -1,0 +1,25 @@
+{
+  "enabledMcpjsonServers": ["garmin"],
+  "permissions": {
+    "allow": [
+      "Bash(python3 scripts/*)",
+      "Bash(python3 tests/*)",
+      "WebFetch(domain:api.open-meteo.com)",
+      "mcp__garmin__get_activities_by_date",
+      "mcp__garmin__get_activities_fordate",
+      "mcp__garmin__get_activity",
+      "mcp__garmin__get_activity_splits",
+      "mcp__garmin__get_activity_hr_in_timezones",
+      "mcp__garmin__get_activity_weather",
+      "mcp__garmin__get_training_readiness",
+      "mcp__garmin__get_hrv_data",
+      "mcp__garmin__get_hrv_trend",
+      "mcp__garmin__get_sleep_data",
+      "mcp__garmin__get_body_battery",
+      "mcp__garmin__get_rhr_day",
+      "mcp__garmin__get_stats",
+      "mcp__garmin__get_vo2max_trend",
+      "mcp__garmin__get_race_predictions"
+    ]
+  }
+}

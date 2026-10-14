@@ -1,0 +1,12 @@
+{
+  "_comment": "Copy to athlete.json and edit. All HR values in bpm. Leave lat/lon null to skip the forecast.",
+  "hr_max": 190,
+  "hr_rest": 50,
+  "lt1": 150,
+  "lt2": 170,
+  "threshold_pace": "4:30",
+  "goal_marathon_pace": "5:00",
+  "location": {"name": "Home", "lat": null, "lon": null, "timezone": "Europe/London"},
+  "plan_file": "plan.md",
+  "log_file": "log.md"
+}
