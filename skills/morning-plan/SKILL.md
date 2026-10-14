@@ -53,7 +53,7 @@ Always give today's **ceiling**, not just a number.
 ## Output (to chat)
 
 - Header: `🏃 <date> — <day>: <planned session>`
-- 2–4 bullets on readiness (HRV trend, sleep, body battery/RHR, load)
+- 2–4 bullets on readiness (HRV trend, sleep, body battery/RHR, and **load**: both acute:chronic ratios + the last hard day)
 - **The call** in one bold line, with the specific adjustment if there is one
 - **Today's HR ceiling** and pace targets, so it's usable on the road
 - **Weight** (only if tracked): today + 7-day average in one line
@@ -67,6 +67,7 @@ Append to `log_file` under a `## <date>` heading (create the file with a title i
 ### <date> <day> — morning
 - Planned: <session> (<km>) · HR ceiling <band>
 - Readiness: <score/status> · HRV <val> vs <baseline> · sleep <h> · BB <n> · RHR <n>
+- Load: ACWR <trimp> TRIMP / <garmin> Garmin · last hard <date> <what> (<n> d ago)
 - Weather: best window <time> · <temp/feels>°C · dew <n> · wind <n> · rain <n>%
 - Call: <go / adjust / easy> — <reason in a few words>
 ```

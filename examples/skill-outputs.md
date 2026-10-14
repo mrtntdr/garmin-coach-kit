@@ -7,18 +7,33 @@ compact version of each into the log (see `log.example.md`).
 
 > 🏃 2026-10-07 — Wed: Threshold 3 × 8 min @ 4:30
 >
-> - HRV 58, BALANCED, inside its 55–63 baseline for 14 days
+> - HRV 58 last night, inside its 55–63 baseline; BALANCED all week
 > - Sleep 7.1 h (score 81), body battery 78
 > - RHR 51, same as the 7-day average
-> - Load: last hard day was Sunday's long run, two easy days since
+> - **Load: steady build, not a spike.** Acute:chronic 1.08 by TRIMP and 1.12 by Garmin load
+>   (both inside 0.8–1.3). Last hard day was Sunday's 100-min long run, 3 days ago, with gym and
+>   an easy run since, so the legs are fresh for reps
 >
 > **GO as planned.**
 >
 > **HR:** warm-up and jogs ≤150. Reps at **4:30/km, capped at 170**. If rep 3 is above 170 before
 > half-way, finish it at 4:35 instead of forcing the pace.
 >
-> **Best window: 18:00–19:00.** 11 °C (feels like 9), dew point 6 (no heat effect), wind 9 km/h,
-> 10 % chance of rain. Later is fine too; it only gets cooler.
+> **⚖️ Weight:** 74.6 kg · 7-day avg 74.9 (6 days), flat
+>
+> **Best window: 18:00–19:00.** 11 °C (feels like 9), dew point 6 (no heat effect), wind 9 km/h
+> from the SW, 10 % chance of rain. On an out-and-back, start into the wind (head SW) so the
+> tailwind brings you home. Later is fine too; it only gets cooler.
+
+<details><summary>The <code>load</code> block it was read from (<code>fetch_readiness.py</code>)</summary>
+
+```json
+"load": {"trimp_7d": 412, "trimp_28d": 1526, "trimp_acwr": 1.08,
+         "garmin_load_7d": 655, "garmin_load_28d": 2340, "garmin_acwr": 1.12,
+         "last_hard": {"date": "2026-10-04", "days_ago": 3, "why": "100 min",
+                       "name": "Long Run"}}
+```
+</details>
 
 ## `/workout-review`
 

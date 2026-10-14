@@ -7,6 +7,7 @@ What the three skills append here, one entry each. Synthetic data.
 ### 2026-10-07 Wed — morning
 - Planned: Threshold 3 × 8 min @ 4:30 (9 km) · HR ceiling ≤170 on reps
 - Readiness: n/a · HRV 58 vs 55–63 BALANCED · sleep 7.1 h · BB 78 · RHR 51 (7-day 51)
+- Load: ACWR 1.08 TRIMP / 1.12 Garmin · last hard Sun 4 Oct long run (3 d ago)
 - Weather: best window 18:00–19:00 · 11/9°C · dew 6 · wind 9 · rain 10%
 - Call: go — HRV in range, no sleep debt
 
