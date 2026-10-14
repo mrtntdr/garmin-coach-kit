@@ -40,12 +40,7 @@ import argparse, json, math, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from config import LT1, LT2, HR_MAX, HR_REST
 from garmin_client import f_to_c, dew_point_c
-
-
-def trimp(dur_s, avg_hr):
-    """Banister TRIMP (male weighting 0.64·e^1.92x)."""
-    hrr = (avg_hr - HR_REST) / (HR_MAX - HR_REST)
-    return (dur_s / 60) * hrr * 0.64 * math.exp(1.92 * hrr)
+from load import trimp          # Banister, weighting by `sex` in athlete.json
 
 
 def halves(laps):

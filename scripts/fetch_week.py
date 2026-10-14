@@ -15,6 +15,7 @@ import datetime
 import json
 import sys
 
+import load
 from garmin_client import client, pace_str
 
 RUN_TYPES = {"running": "road", "trail_running": "trail",
@@ -34,7 +35,10 @@ def main():
     errors = {}
     out = {"week": f"{mon} .. {sun}", "errors": errors}
 
-    acts = g.get_activities_by_date(mon.isoformat(), sun.isoformat()) or []
+    # one pull covering the week + the 4 weeks before it (for the load ratios)
+    hist = g.get_activities_by_date((mon - datetime.timedelta(weeks=4)).isoformat(),
+                                    sun.isoformat()) or []
+    acts = [a for a in hist if mon.isoformat() <= (a.get("startTimeLocal") or "")[:10]]
     rows, road, trail = [], 0.0, 0.0
     for a in sorted(acts, key=lambda x: x.get("startTimeLocal") or ""):
         t = (a.get("activityType") or {}).get("typeKey")
@@ -55,11 +59,17 @@ def main():
             "avg_hr": a.get("averageHR"), "max_hr": a.get("maxHR"),
             "te": round(a["aerobicTrainingEffect"], 1) if a.get("aerobicTrainingEffect") else None,
             "load": round(a.get("activityTrainingLoad") or 0),
+            "trimp": round(load.trimp(dur, a.get("averageHR"))) if kind else None,
             "elev_gain": round(a.get("elevationGain") or 0),
         })
     out["activities"] = rows
     out["totals"] = {"road_km": round(road, 1), "trail_km": round(trail, 1),
                      "total_km": round(road + trail, 1), "runs": sum(1 for r in rows if r["km"])}
+
+    # Calendar-week TRIMP vs the prior 4 weeks, plus rolling 7d/28d for both models
+    # (as of Sunday, or today if the week isn't over)
+    out["load"] = {**load.week_trimp(hist, mon),
+                   **load.summarize(hist, min(sun, datetime.date.today()))}
 
     def hrv_endpoints():
         pts = {}

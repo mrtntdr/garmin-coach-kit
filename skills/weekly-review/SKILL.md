@@ -18,7 +18,7 @@ Summarise the training week and grade it against the plan. Default to the Mon–
    python3 scripts/fetch_week.py              # this week
    python3 scripts/fetch_week.py 2026-07-05   # the week containing that date
    ```
-   Returns every activity of the week as a compact line (km, pace, HR, TE, load, elevation), total volume, HRV weekly average at both ends of the week, VO2max, and Garmin's current race predictions. Token error → the user runs `python3 scripts/login.py` once. Fallback for any other failure: Garmin MCP `get_activities_by_date`, `get_hrv_data`, `get_vo2max_trend`, `get_race_predictions`.
+   Returns every activity of the week as a compact line (km, pace, HR, TE, Garmin load, TRIMP, elevation), total volume, a `load` block (this week's TRIMP vs the mean of the 4 weeks before, rolling 7d/28d acute:chronic ratios for TRIMP and Garmin load, last hard day), HRV weekly average at both ends of the week, VO2max, and Garmin's current race predictions. Token error → the user runs `python3 scripts/login.py` once. Fallback for any other failure: Garmin MCP `get_activities_by_date`, `get_hrv_data`, `get_vo2max_trend`, `get_race_predictions`.
    ("road"/"trail" reflects the activity type picked on the watch, not the real surface.)
 
 4. **Read `log_file` from the week's Monday heading onward only** (`grep -n '^## <Monday date>'`, then read from that line) for the week's morning/workout entries. Reuse the splits, verdicts and 80/20 lines already there instead of working them out again.
@@ -30,6 +30,7 @@ Summarise the training week and grade it against the plan. Default to the Mon–
    - Easy days actually easy?
    - Readiness trend (HRV) across the week: building fitness or digging a hole?
    - Week-on-week volume change. Flag ramps above ~10 %/week, especially after a break.
+   - Load: `week_vs_prior_4wk` and both acute:chronic ratios. ~0.8–1.3 steady, >1.5 a spike. Judge against the chronic base, not against a recent holiday or sick week. TRIMP-hot = volume-driven, Garmin-hot = intensity-driven.
    - Garmin's short-distance race predictions (5K/10K) are usually reliable. The marathon figure is an extrapolation, so don't steer by it.
 
 ## Output
@@ -48,7 +49,7 @@ Append to `log_file`:
 ## Week review — <range>
 - Volume: <actual> / <target> km
 - Sessions: <quality done & quality> · long run <km>
-- Trends: HRV <dir> · VO2max <val> · race pred <time>
+- Trends: HRV <dir> · load TRIMP <n> (×<ratio> vs 4 wk) · ACWR <trimp>/<garmin> · VO2max <val> · race pred <time>
 - Grade: <A–F or on-track/behind/ahead>
 - Notes: <2–3 lines: wins, misses, what to change next week>
 ```

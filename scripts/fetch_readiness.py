@@ -17,6 +17,7 @@ import json
 import sys
 import urllib.request
 
+import load
 from config import LOCATION
 from garmin_client import client, compass, heat_stress
 
@@ -133,6 +134,12 @@ def main():
                 # min HR above RHR is impossible: the day hasn't finished syncing
                 "partial_sync": bool(day and min_hr and min_hr > day) or None}
     out["rhr"] = safe(rhr, "rhr", errors)
+
+    # Training load: 7d vs 28d for TRIMP (runs) and Garmin load (everything), and
+    # the last hard day, so "recent load" in the readiness call has real numbers.
+    out["load"] = safe(lambda: load.summarize(
+        load.fetch(g, datetime.date.fromisoformat(date)),
+        datetime.date.fromisoformat(date)), "load", errors)
 
     # Morning weight: today's entry (null = not logged yet) + the 7-day average,
     # which is what matters (single days swing 1–2 kg on water and glycogen).

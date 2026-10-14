@@ -53,6 +53,7 @@ through unchanged.
 | key | meaning |
 |---|---|
 | `hr_max`, `hr_rest` | TRIMP anchors |
+| `sex` | `male` or `female`: picks the Banister TRIMP weighting (0.64·e^1.92x / 0.86·e^1.67x). Default male |
 | `lt1`, `lt2` | aerobic / lactate threshold HR. These drive the easy/moderate/hard 80/20 split |
 | `threshold_pace`, `goal_marathon_pace` | min:sec per km |
 | `location` | `lat`/`lon`/`timezone` for the Open-Meteo hourly forecast (`null` = skip) |
@@ -79,6 +80,7 @@ installed per project (in `.claude/skills/`), not globally in `~/.claude/skills/
 | `fetch_workout.py [date] [--review]` | workout-review | the day's activities, laps, HR time-in-zone, weather (°C); `--review` adds the metrics digest |
 | `workout_review.py <file> \| --demo [long]` | workout-review | true time-in-zone 80/20, TRIMP, EF, decoupling, drift |
 | `fetch_week.py [date]` | weekly-review | Mon–Sun activities, totals, HRV endpoints, VO2max, race predictions (5K/10K/half/marathon as h:mm:ss) |
+| `load.py` | readiness, week, workout | TRIMP (runs) and Garmin load (all activities): 7d vs 28d acute:chronic, week vs prior 4 weeks, last hard day |
 | `garmin_client.py`, `config.py` | all | token auth, unit fixes, config loading |
 
 | config file | what it does |

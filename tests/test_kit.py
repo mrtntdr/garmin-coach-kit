@@ -18,6 +18,7 @@ from config import LT1, LT2                                       # noqa: E402
 from garmin_client import compass, dew_point_c, f_to_c, heat_stress  # noqa: E402
 import fetch_readiness as fr                                      # noqa: E402
 import fetch_week as fw                                           # noqa: E402
+import load                                                       # noqa: E402
 import plan_today as pt                                           # noqa: E402
 import workout_review as wr                                       # noqa: E402
 
@@ -121,6 +122,53 @@ def test_weather_accepts_converted_or_raw_garmin():
 
 def test_hms():
     assert fw.hms(2433) == "0:40:33" and fw.hms(10800.4) == "3:00:00"
+
+
+# ───────────────────────── load ─────────────────────────
+def act(day, mins, hr, kind="running", gl=50, te=3.0, ana=0.0, name="Run"):
+    return {"startTimeLocal": f"{day} 18:00:00", "duration": mins * 60, "averageHR": hr,
+            "activityType": {"typeKey": kind}, "activityTrainingLoad": gl,
+            "aerobicTrainingEffect": te, "anaerobicTrainingEffect": ana, "activityName": name}
+
+
+def test_trimp_banister_and_sex_weighting():
+    # athlete.example: hr_rest 50, hr_max 190. 60 min at HRR 0.5 (HR 120):
+    # male 60 × 0.5 × 0.64 × e^0.96 ≈ 50.1
+    assert close(load.trimp(3600, 120), 50.1, 0.1)
+    assert load.trimp(3600, None) == 0 and load.trimp(0, 140) == 0
+    a, b = 0.86, 1.67                       # female weighting is higher at low HRR
+    assert 60 * 0.5 * a * load.math.exp(b * 0.5) > load.trimp(3600, 120)
+
+
+def test_acwr_is_7d_over_28d_quarter():
+    end = datetime.date(2026, 10, 14)
+    # 4 identical weeks → ratio 1.0 for both models
+    acts = [act((end - datetime.timedelta(days=d)).isoformat(), 50, 145) for d in range(0, 28, 2)]
+    s = load.summarize(acts, end)
+    assert close(s["trimp_acwr"], 1.0, 0.15) and close(s["garmin_acwr"], 1.0, 0.15), s
+    # strength counts for Garmin load but not TRIMP
+    s2 = load.summarize(acts + [act(end.isoformat(), 45, 110, "strength_training", gl=300)], end)
+    assert s2["trimp_7d"] == s["trimp_7d"] and s2["garmin_load_7d"] == s["garmin_load_7d"] + 300
+    assert load.summarize([], end)["trimp_acwr"] is None
+
+
+def test_last_hard_day():
+    end = datetime.date(2026, 10, 14)
+    acts = [act("2026-10-08", 40, 160, ana=3.2, name="Intervals"),
+            act("2026-10-11", 100, 145, name="Long"),
+            act("2026-10-13", 45, 140, ana=1.9, name="Easy + strides")]   # NOT hard
+    h = load.summarize(acts, end)["last_hard"]
+    assert h["date"] == "2026-10-11" and h["days_ago"] == 3 and h["why"] == "100 min", h
+    assert load.is_hard(act("2026-10-08", 40, 160, ana=3.2)) == "anaerobic TE 3.2"
+    assert load.is_hard(act("2026-10-08", 50, 165, te=4.3)) == "aerobic TE 4.3"
+
+
+def test_week_trimp_vs_prior_four():
+    mon = datetime.date(2026, 10, 12)
+    acts = [act((mon - datetime.timedelta(weeks=k)).isoformat(), 60, 145) for k in range(1, 5)]
+    acts += [act(mon.isoformat(), 60, 145), act((mon + datetime.timedelta(days=2)).isoformat(), 60, 145)]
+    w = load.week_trimp(acts, mon)
+    assert w["week_vs_prior_4wk"] == 2.0, w
 
 
 # ───────────────────────── plan extract ─────────────────────────

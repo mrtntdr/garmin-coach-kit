@@ -1,5 +1,22 @@
 # Changelog
 
+## 2.1 — 14 Oct 2026
+
+### Added
+- **Training load** (`scripts/load.py`), so the skills' "recent load" check has numbers:
+  - `fetch_readiness.py` → `load`: TRIMP and Garmin load over 7 vs 28 days, both
+    acute:chronic ratios, and the last hard day with its reason.
+  - `fetch_week.py` → per-activity TRIMP, the week's TRIMP vs the mean of the 4 weeks
+    before, and the same rolling ratios.
+  - TRIMP counts runs only (avg HR × duration); Garmin load counts everything,
+    strength included. Their disagreement is the signal: TRIMP-hot = volume,
+    Garmin-hot = intensity.
+  - Hard day = aerobic TE ≥4.0, anaerobic TE ≥3.0, or ≥90 min. Strides and hill sprints
+    at the end of an easy run (anaerobic TE 1.5–2.5) don't count.
+- **`sex` in `athlete.json`** picks the Banister TRIMP weighting. It was male-only, so
+  TRIMP for women was wrong. Default stays male.
+- 4 more tests (19 in all).
+
 ## 2.0 — 14 Oct 2026
 
 ### Fixed
