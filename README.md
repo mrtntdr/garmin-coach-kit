@@ -128,3 +128,9 @@ The skills are written to read as little as possible:
   `workout_review.py` uses the real seconds-in-zone and splits Garmin zones across your LT1/LT2.
 - Early-morning RHR is **preliminary**, and a partly synced day can show impossible values
   (min HR above RHR, 0 h sleep). The morning skill spots these and tells you to re-sync.
+
+## Licence
+
+MIT, see `LICENSE`. Not affiliated with Garmin. Uses the unofficial
+[garminconnect](https://github.com/cyberjunky/python-garminconnect) library and the
+[Garmin MCP server](https://github.com/Taxuspt/garmin_mcp).
